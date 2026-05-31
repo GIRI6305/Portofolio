@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G Dasthagiri — Java Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--bg2:#111118;--bg3:#16161e;--card:#1a1a24;
+    --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+    --text:#f0f0f8;--muted:#8888a0;--dim:#555568;
+    --a1:#6c63ff;--a2:#00d4aa;--a3:#ff6b6b;--a4:#ff9f40;
+    --g1:linear-gradient(135deg,#6c63ff,#00d4aa);
+    --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+    --r:14px;--rs:8px;
+  }
+  [data-theme="light"]{
+    --bg:#f5f5fc;--bg2:#ebebfa;--bg3:#e2e2f5;--card:#fff;
+    --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+    --text:#08081a;--muted:#55556e;--dim:#9999b0;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;transition:background .3s,color .3s;overflow-x:hidden}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;background:rgba(10,10,15,.88);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}
+  [data-theme="light"] nav{background:rgba(245,245,252,.9)}
+  .nav-logo{font-family:var(--fh);font-weight:800;font-size:1.05rem;letter-spacing:-.02em;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none}
+  .nav-links a{font-size:.82rem;font-weight:400;color:var(--muted);text-decoration:none;letter-spacing:.02em;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-r{display:flex;align-items:center;gap:.8rem}
+  .tbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border2);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .2s}
+  .tbtn:hover{color:var(--text);border-color:var(--a1)}
+  .ncta{padding:8px 20px;border-radius:100px;background:var(--a1);color:#fff;font-size:.82rem;font-weight:500;text-decoration:none;transition:opacity .2s,transform .2s;white-space:nowrap}
+  .ncta:hover{opacity:.85;transform:translateY(-1px)}
+  .hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+  .hbg span{width:20px;height:2px;background:var(--muted);border-radius:2px;transition:all .3s}
+  .mob-menu{display:none;flex-direction:column;position:fixed;top:62px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:1.2rem 5vw;gap:1.1rem;z-index:199}
+  .mob-menu.open{display:flex}
+  .mob-menu a{color:var(--muted);text-decoration:none;font-size:.95rem}
+
+  #hero{min-height:100vh;display:flex;align-items:center;padding:62px 5vw 0;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.15}
+  .o1{width:520px;height:520px;background:#6c63ff;top:-120px;right:-100px}
+  .o2{width:420px;height:420px;background:#00d4aa;bottom:-80px;left:-100px}
+  .o3{width:280px;height:280px;background:#ff9f40;top:45%;right:25%}
+  .hero-in{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;width:100%;max-width:1180px;margin:0 auto}
+  .htag{display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.22);border-radius:100px;padding:5px 15px;font-size:.72rem;color:#a09cf7;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1.4rem}
+  .hdot{width:6px;height:6px;border-radius:50%;background:var(--a1);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+  .hname{font-family:var(--fh);font-size:clamp(2.6rem,5.5vw,4.6rem);font-weight:800;line-height:1.0;letter-spacing:-.04em;margin-bottom:.4rem}
+  .hname .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .htitle{font-size:1rem;color:var(--muted);font-weight:300;margin-bottom:.3rem}
+  .hcgpa{font-size:.82rem;color:var(--a2);font-weight:500;margin-bottom:1.4rem}
+  .hdesc{font-size:.95rem;color:var(--muted);line-height:1.85;max-width:500px;margin-bottom:1.8rem}
+  .hbtns{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap}
+  .bp{padding:12px 26px;background:var(--a1);color:#fff;border-radius:100px;font-size:.88rem;font-weight:500;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 28px rgba(108,99,255,.32)}
+  .bp:hover{transform:translateY(-2px);box-shadow:0 8px 38px rgba(108,99,255,.48)}
+  .bo{padding:11px 26px;border:1px solid var(--border2);color:var(--text);border-radius:100px;font-size:.88rem;font-weight:400;text-decoration:none;transition:all .2s}
+  .bo:hover{border-color:var(--a2);color:var(--a2)}
+  .hstats{display:flex;gap:2rem;margin-top:2.2rem;padding-top:2rem;border-top:1px solid var(--border)}
+  .hst{display:flex;flex-direction:column}
+  .hsn{font-family:var(--fh);font-size:1.7rem;font-weight:800}
+  .hsl{font-size:.7rem;color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
+  .hvisual{display:flex;justify-content:center;align-items:center;position:relative}
+  .aring{position:relative;width:260px;height:260px}
+  .aring::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:var(--g1);animation:spin 9s linear infinite}
+  .aring::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:var(--g1);filter:blur(12px);opacity:.35;animation:spin 9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ain{position:absolute;inset:3px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;z-index:1}
+  .aini{font-family:var(--fh);font-size:4.5rem;font-weight:800;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .fbadge{position:absolute;background:var(--card);border:1px solid var(--border2);border-radius:var(--rs);padding:7px 13px;font-size:.75rem;font-weight:500;color:var(--text);display:flex;align-items:center;gap:7px;backdrop-filter:blur(12px);box-shadow:0 4px 18px rgba(0,0,0,.3);animation:flt 4s ease-in-out infinite}
+  @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .b1{top:18px;right:-28px;animation-delay:0s}
+  .b2{bottom:28px;left:-38px;animation-delay:1.6s}
+  .b3{top:50%;right:-50px;animation-delay:.9s}
+
+  section{padding:96px 5vw}
+  .sec{max-width:1180px;margin:0 auto}
+  .slbl{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--a1);margin-bottom:.9rem;display:flex;align-items:center;gap:10px}
+  .slbl::before{content:'';display:block;width:22px;height:1px;background:var(--a1)}
+  .stitle{font-family:var(--fh);font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.9rem;line-height:1.1}
+  .ssub{font-size:.93rem;color:var(--muted);max-width:480px}
+
+  #about{background:var(--bg2)}
+  .about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+  .about-text p{font-size:.95rem;color:var(--muted);line-height:1.88;margin-bottom:1rem}
+  .about-text p span{color:var(--text);font-weight:500}
+  .about-highlights{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+  .ahl{padding:6px 14px;border-radius:100px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.18);font-size:.76rem;color:#b0acff}
+  .about-cards{display:flex;flex-direction:column;gap:1rem}
+  .acard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:all .3s}
+  .acard:hover{border-color:var(--border2);transform:translateX(5px)}
+  .acard-icon{font-size:1.5rem;flex-shrink:0}
+  .acard-title{font-family:var(--fh);font-size:.9rem;font-weight:700;margin-bottom:.15rem}
+  .acard-val{font-size:.82rem;color:var(--muted)}
+
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:3rem}
+  .skcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;transition:all .3s;position:relative;overflow:hidden}
+  .skcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .3s}
+  .skcard:hover{border-color:var(--border2);transform:translateY(-4px)}
+  .skcard:hover::before{opacity:1}
+  .sk1::before{background:var(--a1)}.sk2::before{background:var(--a2)}.sk3::before{background:var(--a3)}.sk4::before{background:var(--a4)}.sk5::before{background:linear-gradient(90deg,var(--a1),var(--a3))}.sk6::before{background:var(--a3)}
+  .skico{font-size:1.6rem;margin-bottom:.65rem}
+  .sktit{font-family:var(--fh);font-size:.88rem;font-weight:700;margin-bottom:.65rem}
+  .sktags{display:flex;flex-wrap:wrap;gap:5px}
+  .sktag{font-size:.68rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+
+  #experience{background:var(--bg2)}
+  .timeline{margin-top:3rem;position:relative}
+  .timeline::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--border2)}
+  .expitem{display:flex;gap:2rem;margin-bottom:2.8rem;padding-left:55px;position:relative}
+  .expdot{position:absolute;left:10px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--a1);z-index:1}
+  .expdot.g{border-color:var(--a2)}
+  .expcard{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all .3s}
+  .expcard:hover{border-color:var(--border2);transform:translateX(5px)}
+  .exptop{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.4rem}
+  .exprole{font-family:var(--fh);font-size:1.05rem;font-weight:700}
+  .expbadge{font-size:.72rem;background:rgba(108,99,255,.1);color:var(--a1);border:1px solid rgba(108,99,255,.2);border-radius:100px;padding:3px 11px;white-space:nowrap}
+  .expbadge.gb{background:rgba(0,212,170,.1);color:var(--a2);border-color:rgba(0,212,170,.2)}
+  .expco{font-size:.86rem;color:var(--a2);font-weight:500;margin-bottom:.9rem}
+  .expco.p{color:var(--a1)}
+  ul.expl{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+  ul.expl li{font-size:.85rem;color:var(--muted);padding-left:1.2rem;position:relative;line-height:1.65}
+  ul.expl li::before{content:'→';position:absolute;left:0;color:var(--a1);font-size:.72rem;top:.1rem}
+
+  #projects{background:var(--bg)}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.4rem;margin-top:3rem}
+  .pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all .3s;display:flex;flex-direction:column;position:relative;overflow:hidden}
+  .pcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .pcard:hover{border-color:var(--border2);transform:translateY(-6px);box-shadow:0 18px 55px rgba(0,0,0,.4)}
+  .pcard:hover::after{transform:scaleX(1)}
+  .ptop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem}
+  .pico{width:42px;height:42px;border-radius:var(--rs);background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.15rem}
+  .plinks{display:flex;gap:7px}
+  .plink{width:30px;height:30px;border-radius:var(--rs);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:.8rem;transition:all .2s}
+  .plink:hover{border-color:var(--a1);color:var(--a1)}
+  .pname{font-family:var(--fh);font-size:1rem;font-weight:700;margin-bottom:.45rem}
+  .pdesc{font-size:.83rem;color:var(--muted);line-height:1.72;flex:1;margin-bottom:.9rem}
+  .ptags{display:flex;flex-wrap:wrap;gap:5px}
+  .ptag{font-size:.68rem;padding:3px 9px;border-radius:100px;background:rgba(0,212,170,.07);color:var(--a2);border:1px solid rgba(0,212,170,.18)}
+  .pmeta{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--dim);margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border)}
+  .loading-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;display:flex;align-items:center;justify-content:center;min-height:180px;color:var(--dim);font-size:.85rem;flex-direction:column;gap:.9rem}
+  .spin{width:26px;height:26px;border:2px solid var(--border2);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite}
+
+  #academic{background:var(--bg2)}
+  .acad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.4rem;margin-top:3rem}
+  .accard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;transition:all .3s;position:relative;overflow:hidden}
+  .accard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g1);opacity:0;transition:opacity .3s}
+  .accard:hover{border-color:var(--border2);transform:translateY(-4px)}
+  .accard:hover::before{opacity:1}
+  .actop{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+  .acico{width:44px;height:44px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+  .acico.v1{background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2)}
+  .acico.v2{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2)}
+  .actitle{font-family:var(--fh);font-size:1rem;font-weight:700;margin-bottom:.2rem}
+  .acstack{font-size:.72rem;color:var(--dim)}
+  ul.acpoints{list-style:none;display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+  ul.acpoints li{font-size:.83rem;color:var(--muted);padding-left:1.2rem;position:relative;line-height:1.65}
+  ul.acpoints li::before{content:'◆';position:absolute;left:0;color:var(--a1);font-size:.5rem;top:.35rem}
+  .actags{display:flex;flex-wrap:wrap;gap:5px}
+  .actag{font-size:.68rem;padding:3px 9px;border-radius:100px;background:rgba(108,99,255,.08);color:#b0acff;border:1px solid rgba(108,99,255,.18)}
+
+  #education{background:var(--bg)}
+  .educard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;display:flex;align-items:flex-start;gap:1.5rem;margin-top:2rem;transition:all .3s;max-width:680px}
+  .educard:hover{border-color:var(--a1);transform:translateY(-3px)}
+  .eduico{width:50px;height:50px;flex-shrink:0;border-radius:12px;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+  .eddeg{font-family:var(--fh);font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
+  .edsch{font-size:.88rem;color:var(--a2);font-weight:500;margin-bottom:.2rem}
+  .edyr{font-size:.78rem;color:var(--dim);margin-bottom:.6rem}
+  .edcgpa{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--a4);background:rgba(255,159,64,.08);border:1px solid rgba(255,159,64,.2);padding:3px 11px;border-radius:100px}
+  .edpill{margin-left:auto;flex-shrink:0;padding:4px 13px;border-radius:100px;background:rgba(0,212,170,.08);color:var(--a2);border:1px solid rgba(0,212,170,.2);font-size:.73rem;font-weight:500;align-self:flex-start}
+  .strength-wrap{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem}
+  .stag{padding:8px 18px;border-radius:100px;background:var(--card);border:1px solid var(--border);font-size:.82rem;color:var(--muted);transition:all .3s;cursor:default}
+  .stag:hover{border-color:var(--a1);color:var(--a1)}
+
+  #contact{background:var(--bg2)}
+  .cg{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;align-items:start}
+  .clinks{display:flex;flex-direction:column;gap:.9rem}
+  .clink{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.4rem;text-decoration:none;color:var(--text);transition:all .3s}
+  .clink:hover{border-color:var(--a1);transform:translateX(6px)}
+  .clico{width:40px;height:40px;border-radius:var(--rs);background:rgba(108,99,255,.08);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .cllbl{font-size:.7rem;color:var(--dim);margin-bottom:1px}
+  .clval{font-size:.86rem;font-weight:500}
+  .cbox{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem}
+  .cboxtit{font-family:var(--fh);font-size:1.35rem;font-weight:700;margin-bottom:.5rem}
+  .cboxsub{font-size:.88rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.75}
+  .cemailbtn{display:inline-flex;align-items:center;gap:9px;background:var(--g1);color:#fff;padding:12px 22px;border-radius:100px;font-size:.88rem;font-weight:500;text-decoration:none;transition:opacity .2s,transform .2s}
+  .cemailbtn:hover{opacity:.88;transform:translateY(-2px)}
+
+  footer{background:var(--bg);border-top:1px solid var(--border);padding:1.8rem 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+  .fnm{font-family:var(--fh);font-weight:700;font-size:.88rem}
+  .fcp{font-size:.76rem;color:var(--dim)}
+  .flinks{display:flex;gap:1rem}
+  .flinks a{font-size:.76rem;color:var(--dim);text-decoration:none;transition:color .2s}
+  .flinks a:hover{color:var(--a1)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s,transform .65s}
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .65s,transform .65s}
+  .reveal-l.in{opacity:1;transform:translateX(0)}
+
+  @media(max-width:960px){
+    .hero-in{grid-template-columns:1fr;text-align:center}
+    .hvisual{order:-1}
+    .hdesc{margin:0 auto 1.8rem}
+    .hbtns{justify-content:center}
+    .hstats{justify-content:center}
+    .nav-links{display:none}
+    .hbg{display:flex}
+    .b1,.b3{display:none}
+    .about-grid{grid-template-columns:1fr}
+    .cg{grid-template-columns:1fr}
+  }
+  @media(max-width:580px){
+    section{padding:68px 1.1rem}
+    .hname{font-size:2.4rem}
+    .aring{width:195px;height:195px}
+    .aini{font-size:3.2rem}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">GD.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#academic">Academic</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="tbtn" id="tbtn">🌙</button>
+    <a href="mailto:dasthagiri630@gmail.com" class="ncta">Hire Me</a>
+    <div class="hbg" id="hbg"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a>
+  <a href="#projects">Projects</a><a href="#academic">Academic</a><a href="#education">Education</a><a href="#contact">Contact</a>
+</div>
+
+<section id="hero">
+  <div class="hero-bg">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  </div>
+  <div class="hero-in">
+    <div>
+      <div class="htag"><span class="hdot"></span>Open to Opportunities</div>
+      <h1 class="hname">G <span class="gr">Dasthagiri</span></h1>
+      <p class="htitle">Java Full Stack Developer</p>
+      <p class="hcgpa">📍 Bangalore / Hyderabad, India &nbsp;·&nbsp; CGPA: 8.0 &nbsp;·&nbsp; B.Tech CSE 2026</p>
+      <p class="hdesc">A passionate Java Full Stack Developer with 4 months of combined internship experience building scalable, secure web applications. Proficient in Spring Boot, REST APIs and React.js — committed to clean code, continuous growth and real-world impact.</p>
+      <div class="hbtns">
+        <a href="#projects" class="bp">View Projects</a>
+        <a href="#contact" class="bo">Get In Touch</a>
+      </div>
+      <div class="hstats">
+        <div class="hst"><span class="hsn">2</span><span class="hsl">Internships</span></div>
+        <div class="hst"><span class="hsn" id="repoCount">—</span><span class="hsl">Repos</span></div>
+        <div class="hst"><span class="hsn">92%</span><span class="hsl">CNN Accuracy</span></div>
+        <div class="hst"><span class="hsn">2026</span><span class="hsl">Graduate</span></div>
+      </div>
+    </div>
+    <div class="hvisual">
+      <div class="aring">
+        <div class="ain"><span class="aini">GD</span></div>
+      </div>
+      <div class="fbadge b1"><span>☕</span> Java Expert</div>
+      <div class="fbadge b2"><span>🌱</span> Spring Boot</div>
+      <div class="fbadge b3"><span>⚛️</span> React.js</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="sec">
+    <div class="slbl">About</div>
+    <h2 class="stitle">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-text reveal-l">
+        <p>I'm <span>G Dasthagiri</span>, a final-year B.Tech CSE student at Dr. M.G.R. Educational and Research Institute, Chennai, with a <span>CGPA of 8.0</span> and 4 months of combined internship experience.</p>
+        <p>I build <span>scalable, secure web applications</span> using Core Java, Spring Boot, Spring MVC, Hibernate and RESTful APIs on the backend — paired with React.js, HTML, CSS and JavaScript on the frontend.</p>
+        <p>My standout projects include a <span>multi-role Job Portal</span> with JWT authentication and RBAC, and a <span>CNN-based Emotion Detection System</span> achieving ~92% accuracy — demonstrating both full-stack and machine learning capabilities.</p>
+        <div class="about-highlights">
+          <span class="ahl">Problem Solver</span>
+          <span class="ahl">Team Player</span>
+          <span class="ahl">Fast Learner</span>
+          <span class="ahl">Clean Code</span>
+          <span class="ahl">Adaptable</span>
+          <span class="ahl">Analytical Thinker</span>
+        </div>
+      </div>
+      <div class="about-cards reveal">
+        <div class="acard"><span class="acard-icon">🏢</span><div><div class="acard-title">QSpiders, Chennai</div><div class="acard-val">Java Full Stack Intern · Nov 2025 – Jan 2026</div></div></div>
+        <div class="acard"><span class="acard-icon">💻</span><div><div class="acard-title">CodSoft (Remote)</div><div class="acard-val">Java Programming Intern · Jan – Feb 2025</div></div></div>
+        <div class="acard"><span class="acard-icon">🎓</span><div><div class="acard-title">B.Tech — CSE</div><div class="acard-val">Dr. M.G.R. Institute · CGPA 8.0 · 2022–2026</div></div></div>
+        <div class="acard"><span class="acard-icon">📞</span><div><div class="acard-title">Phone</div><div class="acard-val">+91 6305543498</div></div></div>
+        <div class="acard"><span class="acard-icon">📍</span><div><div class="acard-title">Location</div><div class="acard-val">Bangalore / Hyderabad, India</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec">
+    <div class="slbl">Expertise</div>
+    <h2 class="stitle">Technical Skills</h2>
+    <p class="ssub">Extracted directly from resume — experience and projects.</p>
+    <div class="skills-grid reveal">
+      <div class="skcard sk1">
+        <div class="skico">☕</div>
+        <div class="sktit">Backend</div>
+        <div class="sktags">
+          <span class="sktag">Java (Core Java)</span><span class="sktag">OOP</span>
+          <span class="sktag">Spring Boot</span><span class="sktag">Spring MVC</span>
+          <span class="sktag">Hibernate</span><span class="sktag">RESTful APIs</span>
+          <span class="sktag">JWT Auth</span><span class="sktag">RBAC</span>
+        </div>
+      </div>
+      <div class="skcard sk2">
+        <div class="skico">🎨</div>
+        <div class="sktit">Frontend</div>
+        <div class="sktags">
+          <span class="sktag">HTML5</span><span class="sktag">CSS3</span>
+          <span class="sktag">JavaScript</span><span class="sktag">React.js</span>
+        </div>
+      </div>
+      <div class="skcard sk3">
+        <div class="skico">🗄️</div>
+        <div class="sktit">Database</div>
+        <div class="sktags">
+          <span class="sktag">MySQL</span><span class="sktag">CRUD Operations</span>
+          <span class="sktag">Database Design</span>
+        </div>
+      </div>
+      <div class="skcard sk4">
+        <div class="skico">🛠️</div>
+        <div class="sktit">Tools & Platforms</div>
+        <div class="sktags">
+          <span class="sktag">Git</span><span class="sktag">GitHub</span>
+          <span class="sktag">Postman</span><span class="sktag">Eclipse IDE</span><span class="sktag">VS Code</span>
+        </div>
+      </div>
+      <div class="skcard sk5">
+        <div class="skico">🧠</div>
+        <div class="sktit">Core Concepts</div>
+        <div class="sktags">
+          <span class="sktag">Data Structures</span><span class="sktag">Algorithms</span>
+          <span class="sktag">Multithreading</span><span class="sktag">Exception Handling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec">
+    <div class="slbl">Career</div>
+    <h2 class="stitle">Internship Experience</h2>
+    <p class="ssub">4 months of combined real-world industry exposure across 2 companies.</p>
+    <div class="timeline reveal">
+      <div class="expitem">
+        <div class="expdot"></div>
+        <div class="expcard">
+          <div class="exptop">
+            <div class="exprole">Java Full Stack Development Intern</div>
+            <div class="expbadge">Nov 2025 – Jan 2026</div>
+          </div>
+          <div class="expco p">QSpiders &nbsp;·&nbsp; Chennai</div>
+          <ul class="expl">
+            <li>Built and deployed full-stack web applications using Core Java and Spring Boot, improving API response time by approximately 30%.</li>
+            <li>Designed RESTful APIs and integrated MySQL with optimised CRUD operations for efficient, reliable data handling.</li>
+            <li>Gained end-to-end full-stack development experience in a structured professional team environment.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="expitem">
+        <div class="expdot g"></div>
+        <div class="expcard">
+          <div class="exptop">
+            <div class="exprole">Java Programming Intern</div>
+            <div class="expbadge gb">Jan 2025 – Feb 2025</div>
+          </div>
+          <div class="expco">CodSoft &nbsp;·&nbsp; Remote</div>
+          <ul class="expl">
+            <li>Developed Java applications (ATM Interface, Grade Calculator) applying OOP principles and exception handling.</li>
+            <li>Implemented balance management, input validation and transaction logic in real-world Java programs.</li>
+            <li>Strengthened core Java skills — collections, multithreading and robust error handling patterns.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sec">
+    <div class="slbl">GitHub</div>
+    <h2 class="stitle">GitHub Repositories</h2>
+    <p class="ssub">Live-fetched from <a href="https://github.com/GIRI6305" target="_blank" style="color:var(--a1);text-decoration:none">github.com/GIRI6305</a></p>
+    <div class="pgrid reveal" id="pgrid">
+      <div class="loading-card"><div class="spin"></div><span>Fetching from GitHub…</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="academic">
+  <div class="sec">
+    <div class="slbl">Academic Projects</div>
+    <h2 class="stitle">Signature Projects</h2>
+    <p class="ssub">Highlight projects from resume demonstrating full-stack and ML skills.</p>
+    <div class="acad-grid reveal">
+      <div class="accard">
+        <div class="actop">
+          <div class="acico v1">🏥</div>
+          <div>
+            <div class="actitle">Doctor's Appointment System</div>
+            <div class="acstack">Java · Spring Boot · React.js · MySQL · Hibernate · REST APIs</div>
+          </div>
+        </div>
+        <ul class="acpoints">
+          <li>Built a full-stack healthcare web application enabling patients to browse doctors by speciality, book appointments in real-time, and manage their health records — all from a single intuitive dashboard.</li>
+          <li>Engineered a secure multi-role backend (Admin, Doctor, Patient) using Spring Boot REST APIs with JWT-based authentication and role-based access control, ensuring zero unauthorised data access.</li>
+          <li>Designed an optimised MySQL schema with Hibernate ORM handling complex relational queries — appointment slots, availability checks and booking confirmations — with sub-100ms response times.</li>
+          <li>Delivered a fully responsive React.js frontend with real-time appointment status updates, search and filter by doctor/speciality, and a clean UI that reduced booking steps by 60%.</li>
+        </ul>
+        <div class="actags">
+          <span class="actag">Spring Boot</span><span class="actag">React.js</span><span class="actag">JWT Auth</span>
+          <span class="actag">Hibernate ORM</span><span class="actag">MySQL</span><span class="actag">REST APIs</span><span class="actag">RBAC</span>
+        </div>
+      </div>
+      <div class="accard">
+        <div class="actop">
+          <div class="acico v2">🛒</div>
+          <div>
+            <div class="actitle">ShopEasy — E-Commerce Platform</div>
+            <div class="acstack">Java · Spring Boot · React.js · MySQL · Hibernate · REST APIs</div>
+          </div>
+        </div>
+        <ul class="acpoints">
+          <li>Architected a production-grade full-stack e-commerce platform from scratch — featuring product catalogue management, smart search & filter, cart system, order tracking and secure checkout workflows.</li>
+          <li>Built scalable Spring Boot REST APIs powering all platform operations including product CRUD, user sessions, order lifecycle and inventory management with Hibernate ORM and MySQL.</li>
+          <li>Implemented a robust JWT-based authentication system with role separation (Admin/Buyer) — admins manage products and orders while buyers experience a seamless, fast shopping journey.</li>
+          <li>Crafted a dynamic React.js storefront with real-time cart updates, product filtering, order history and a responsive UI designed to convert browsers into buyers at every touchpoint.</li>
+        </ul>
+        <div class="actags">
+          <span class="actag">Spring Boot</span><span class="actag">React.js</span><span class="actag">JWT Auth</span>
+          <span class="actag">Hibernate ORM</span><span class="actag">MySQL</span><span class="actag">REST APIs</span><span class="actag">E-Commerce</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec">
+    <div class="slbl">Academic</div>
+    <h2 class="stitle">Education</h2>
+    <div class="educard reveal">
+      <div class="eduico">🎓</div>
+      <div>
+        <div class="eddeg">B.Tech — Computer Science and Engineering</div>
+        <div class="edsch">Dr. M.G.R. Educational and Research Institute, Chennai</div>
+        <div class="edyr">2022 – 2026 &nbsp;·&nbsp; Chennai, Tamil Nadu</div>
+        <div class="edcgpa">⭐ CGPA: 8.0</div>
+      </div>
+      <div class="edpill">In Progress</div>
+    </div>
+    <div style="margin-top:3.5rem">
+      <div class="slbl" style="margin-bottom:.6rem">Strengths</div>
+      <h3 style="font-family:var(--fh);font-size:1.3rem;font-weight:700;margin-bottom:.4rem">Additional Strengths</h3>
+      <div class="strength-wrap reveal">
+        <span class="stag">🔍 Problem-Solving</span>
+        <span class="stag">🐛 Java Debugging</span>
+        <span class="stag">🤝 Team Collaboration</span>
+        <span class="stag">⚡ Fast Learner</span>
+        <span class="stag">🔄 Adaptability</span>
+        <span class="stag">🧩 Analytical Thinking</span>
+        <span class="stag">✍️ Clean Code Advocate</span>
+        <span class="stag">🎯 Detail-Oriented</span>
+        <span class="stag">💡 Self-Motivated</span>
+        <span class="stag">🚀 Deadline Driven</span>
+        <span class="stag">🌱 Continuous Learner</span>
+        <span class="stag">🤲 Open to Feedback</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec">
+    <div class="slbl">Connect</div>
+    <h2 class="stitle">Get In Touch</h2>
+    <p class="ssub">Open to full-time Java developer roles, internships and collaborations.</p>
+    <div class="cg reveal">
+      <div class="clinks">
+        <a href="mailto:dasthagiri630@gmail.com" class="clink">
+          <div class="clico">✉️</div>
+          <div><div class="cllbl">Email</div><div class="clval">dasthagiri630@gmail.com</div></div>
+        </a>
+        <a href="tel:+916305543498" class="clink">
+          <div class="clico">📞</div>
+          <div><div class="cllbl">Phone</div><div class="clval">+91 6305543498</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/g-dasthagiri-655534271" target="_blank" class="clink">
+          <div class="clico">💼</div>
+          <div><div class="cllbl">LinkedIn</div><div class="clval">g-dasthagiri-655534271</div></div>
+        </a>
+        <a href="https://github.com/GIRI6305" target="_blank" class="clink">
+          <div class="clico">🐙</div>
+          <div><div class="cllbl">GitHub</div><div class="clval">GIRI6305</div></div>
+        </a>
+        <div class="clink" style="cursor:default">
+          <div class="clico">📍</div>
+          <div><div class="cllbl">Location</div><div class="clval">Bangalore / Hyderabad, India</div></div>
+        </div>
+      </div>
+      <div class="cbox">
+        <div class="cboxtit">Let's build something great 🚀</div>
+        <p class="cboxsub">I'm actively seeking full-time opportunities as a Java Full Stack Developer. Whether you have a role in mind, a project to collaborate on, or just want to connect — my inbox is always open.</p>
+        <a href="mailto:dasthagiri630@gmail.com" class="cemailbtn">✉️ &nbsp;Send a Message</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fnm">G Dasthagiri</div>
+  <div class="fcp">© 2025 · Java Full Stack Developer · Bangalore / Hyderabad</div>
+  <div class="flinks">
+    <a href="https://github.com/GIRI6305" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/g-dasthagiri-655534271" target="_blank">LinkedIn</a>
+    <a href="mailto:dasthagiri630@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const tbtn=document.getElementById('tbtn');let dark=true;
+tbtn.addEventListener('click',()=>{dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'light');tbtn.textContent=dark?'🌙':'☀️'});
+
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mobMenu');
+hbg.addEventListener('click',()=>mob.classList.toggle('open'));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));
+
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-l').forEach(el=>ro.observe(el));
+
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.borderBottomColor=window.scrollY>20?'var(--border2)':'var(--border)'});
+
+const LICO={java:'☕',javascript:'⚡',python:'🐍',html:'🌐',css:'🎨',typescript:'🔷',default:'📦'};
+function ico(l){return l?LICO[l.toLowerCase()]||LICO.default:LICO.default}
+
+async function loadRepos(){
+  const grid=document.getElementById('pgrid');
+  try{
+    const r=await fetch('https://api.github.com/users/GIRI6305/repos?sort=updated&per_page=15');
+    const repos=await r.json();
+    if(!Array.isArray(repos)||!repos.length)throw new Error();
+    document.getElementById('repoCount').textContent=repos.length+'+';
+    const list=repos.filter(r=>!r.fork && r.name.toLowerCase()!=='grid07-assignment').slice(0,9);
+    grid.innerHTML=list.map(repo=>{
+      const lang=repo.language||'';
+      const desc=repo.description||'A Java / Full Stack project built during internship or academic coursework showcasing core development skills.';
+      const topics=repo.topics&&repo.topics.length?repo.topics.slice(0,3):(lang?[lang]:['Java']);
+      return`<div class="pcard">
+        <div class="ptop">
+          <div class="pico">${ico(lang)}</div>
+          <div class="plinks">
+            <a href="${repo.html_url}" target="_blank" class="plink" title="View on GitHub">⤴</a>
+            ${repo.homepage?`<a href="${repo.homepage}" target="_blank" class="plink" title="Live Demo">▶</a>`:''}
+          </div>
+        </div>
+        <div class="pname">${repo.name.replace(/[-_]/g,' ')}</div>
+        <div class="pdesc">${desc}</div>
+        <div class="ptags">${topics.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+        <div class="pmeta">⭐ ${repo.stargazers_count} &nbsp; 🍴 ${repo.forks_count}
+          <span style="margin-left:auto">${new Date(repo.updated_at).toLocaleDateString('en-IN',{month:'short',year:'numeric'})}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }catch{
+    document.getElementById('repoCount').textContent='10+';
+    grid.innerHTML=`
+    <div class="pcard">
+      <div class="ptop"><div class="pico">💼</div><div class="plinks"><a href="https://github.com/GIRI6305" target="_blank" class="plink">⤴</a></div></div>
+      <div class="pname">Job Portal Full Stack</div>
+      <div class="pdesc">Multi-role job portal with Admin, Recruiter and Job Seeker workflows. JWT authentication, RBAC, Spring Boot REST APIs and Hibernate ORM with MySQL.</div>
+      <div class="ptags"><span class="ptag">Spring Boot</span><span class="ptag">JWT</span><span class="ptag">MySQL</span><span class="ptag">React.js</span></div>
+      <div class="pmeta">⭐ — &nbsp; 🍴 —<span style="margin-left:auto">2025</span></div>
+    </div>
+    <div class="pcard">
+      <div class="ptop"><div class="pico">🧠</div><div class="plinks"><a href="https://github.com/GIRI6305" target="_blank" class="plink">⤴</a></div></div>
+      <div class="pname">Emotion Detection CNN</div>
+      <div class="pdesc">CNN facial emotion recognition model achieving ~92% accuracy. Real-time preprocessing with OpenCV, dropout and data augmentation to reduce overfitting.</div>
+      <div class="ptags"><span class="ptag">Python</span><span class="ptag">TensorFlow</span><span class="ptag">OpenCV</span><span class="ptag">CNN</span></div>
+      <div class="pmeta">⭐ — &nbsp; 🍴 —<span style="margin-left:auto">2025</span></div>
+    </div>
+    <div class="pcard">
+      <div class="ptop"><div class="pico">☕</div><div class="plinks"><a href="https://github.com/GIRI6305" target="_blank" class="plink">⤴</a></div></div>
+      <div class="pname">ATM Interface Java</div>
+      <div class="pdesc">Java ATM simulation built during CodSoft internship — balance management, input validation and transaction logic using OOP principles and exception handling.</div>
+      <div class="ptags"><span class="ptag">Core Java</span><span class="ptag">OOP</span><span class="ptag">Exception Handling</span></div>
+      <div class="pmeta">⭐ — &nbsp; 🍴 —<span style="margin-left:auto">2025</span></div>
+    </div>`;
+  }
+}
+loadRepos();
+</script>
+</body>
+</html>
